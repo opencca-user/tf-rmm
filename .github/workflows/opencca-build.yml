@@ -4,7 +4,7 @@ name: opencca-build
 
 on:
   push:
-    branches: [opencca/main]
+    branches: [opencca/main, opencca/systex25, opencca/next]
   workflow_dispatch:
 
 concurrency:
@@ -32,7 +32,7 @@ jobs:
         run: |
           git clone --depth 1 "$CI_REPO" .ci
           cd .ci
-          $CI_RUN_SCRIPT "$GITHUB_WORKSPACE" "$CI_BUILD_SCRIPT"
+          ./"$CI_RUN_SCRIPT" "$GITHUB_WORKSPACE" ./"$CI_BUILD_SCRIPT"
 
       - name: Upload snapshot
         uses: actions/upload-artifact@v4
