@@ -1,1 +1,29 @@
+name: opencca-build
 
+on:
+  push:
+    branches:
+      - opencca/main
+  workflow_dispatch:
+
+concurrency:
+  group: schedule-${{ github.workflow }}
+  cancel-in-progress: true
+
+env:
+  BUILD_SCRIPT: ${{ github.workspace }}/.github/workflows/opencca/opencca-build.sh
+
+
+jobs:
+  build-and-push:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run build script
+        run: |
+          cp ./.github/workflows/opencca/run-in-docker.sh .
+          chmod +x run-in-docker.sh
+          ./run-in-docker.sh $BUILD_SCRIPT
