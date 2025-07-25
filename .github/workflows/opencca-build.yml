@@ -1,5 +1,7 @@
 name: opencca-build
 
+# CI Build script for tf-rmm
+
 on:
   push:
     branches: [opencca/main]
@@ -10,34 +12,27 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  CI_REPO: https://github.com/opencca-user/ci-scripts
-  CI_DIR: .ci-scripts
+  CI_REPO: https://github.com/opencca/ci-scripts
   CI_RUN_SCRIPT: run-ci.sh
   CI_BUILD_SCRIPT: build-tf-rmm.sh
-  
-  SNAPSHOT_DIR: ${{ github.workspace }}/snapshot
 
 jobs:
   build-and-push:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout repo
+      - name: Checkout project repo
         uses: actions/checkout@v4
         with:
           submodules: recursive
           clean: true
           path: tf-rmm
 
-      - name: Clone CI scripts
+      - name: Clone and run CI
         run: |
-          cd $GITHUB_WORKSPACE
-          git clone --depth 1 "$CI_REPO" "$CI_DIR"
-          chmod +x "$CI_DIR/run-ci.sh"
-
-      - name: Run CI runner with build script
-        run: |
-          "$CI_DIR/run-ci.sh" "$GITHUB_WORKSPACE" "$CI_DIR/$CI_BUILD_SCRIPT"
+          git clone --depth 1 "$CI_REPO" .ci
+          cd .ci
+          $CI_RUN_SCRIPT "$GITHUB_WORKSPACE" "$CI_BUILD_SCRIPT"
 
       - name: Upload snapshot
         uses: actions/upload-artifact@v4
