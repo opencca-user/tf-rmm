@@ -1,3 +1,5 @@
+name: opencca-build
+
 on:
   push:
     branches: [opencca/main, opencca/systex25, opencca/next]
@@ -5,6 +7,6 @@ on:
 
 jobs:
   trigger-external:
-    uses: opencca/ci-scripts/.github/workflows/build-tf-rmm.yml@opencca-main
+    uses: opencca/ci-scripts/.github/workflows/build-tf-rmm.yml@opencca/main
     with:
       branch: ${{ github.ref_name }}
