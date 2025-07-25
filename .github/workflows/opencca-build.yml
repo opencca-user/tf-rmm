@@ -12,7 +12,6 @@ concurrency:
 
 env:
   BUILD_SCRIPT: ${{ github.workspace }}/.github/workflows/opencca/opencca-build.sh
-  BUILD_SNAPSHOT_DIR: ${{ github.workspace }}/../snapshot
   RUNNER_DIR: ${{ github.workspace }}/.runner-build
 
 
@@ -35,13 +34,14 @@ jobs:
           ln -s ../ tf-rmm
           chmod +x run-in-docker.sh
           mkdir -p snapshot
-          
+
           ./run-in-docker.sh $BUILD_SCRIPT
-          ls -al $BUILD_SNAPSHOT_DIR
+          ls -al $RUNNER_DIR
+          ls -al $RUNNER_DIR/snapshot
 
       - name: Upload snapshot artifacts
         uses: actions/upload-artifact@v4
         with:
           name: tf-rmm-snapshot
-          path: ${{ env.BUILD_SNAPSHOT_DIR }}/tf-rmm.elf
+          path: ${{ env.RUNNER_DIR }}/snapshot/tf-rmm.elf
           if-no-files-found: error
