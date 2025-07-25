@@ -30,6 +30,7 @@ jobs:
 
       - name: Clone and run CI
         run: |
+          rm -r .ci
           git clone --depth 1 "$CI_REPO" .ci
           cd .ci
           ./"$CI_RUN_SCRIPT" "$GITHUB_WORKSPACE" ./"$CI_BUILD_SCRIPT"
