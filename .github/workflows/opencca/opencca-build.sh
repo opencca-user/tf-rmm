@@ -26,3 +26,6 @@ BUILD_REPO_DIR="$PROJECT_ROOT/$BUILD_DIRNAME"
 git clone --depth 1 "$BUILD_REPO" "$BUILD_REPO_DIR"    
 
 ls -al $PROJECT_ROOT
+pwd
+
+ls -al $PROJECT_ROOT/../
