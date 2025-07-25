@@ -10,22 +10,20 @@ cd $SCRIPT_DIR
 
 # XXX: /opencca in container
 PROJECT_ROOT=/opencca
-
-pwd
-
-echo "project root: "
-ls -al $PROJECT_ROOT
-
-#
-# Clone the opencca-build scripts
-#
+REPO_DIR=$PROJECT_ROOT/tf-rmm
+SNAPSHOT_DIR=$PROJECT_ROOT/snapshot
+BUILD_DIR=$PROJECT_ROOT/opencca-build
 BUILD_REPO=https://github.com/opencca-user/docker-image-test.git
-BUILD_DIRNAME=opencca-build
-BUILD_REPO_DIR="$PROJECT_ROOT/$BUILD_DIRNAME"
 
-git clone --depth 1 "$BUILD_REPO" "$BUILD_REPO_DIR"    
+rm -r $BUILD_DIR
+git clone --depth 1 "$BUILD_REPO" "$BUILD_DIR"    
 
-ls -al $PROJECT_ROOT
-pwd
+rm -r $SNAPSHOT_DIR
+mkdir -p $SNAPSHOT_DIR
 
-ls -al $PROJECT_ROOT/../
+cd $BUILD_DIR/buildconf
+
+./firmware_opencca.mk rmm
+
+
+

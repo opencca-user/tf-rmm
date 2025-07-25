@@ -6,10 +6,10 @@ set -euo pipefail
 #
 # Runs script.sh inside a opencca-build docker environment.
 # script.sh is mounted into the container. So it can not depend
-# on other relative scripts.
+# on other relative scripts. Creates temp directories in current directory.
+# So intended base directory is /runner-root/_work/{project-name}.
 #
 # This is a helper to build CI projects
-
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 BUILD_REPO=https://github.com/opencca-user/docker-image-test.git
