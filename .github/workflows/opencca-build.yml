@@ -37,4 +37,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tf-rmm-snapshot
-          path: $BUILD_SNAPSHOT_DIR/tf-rmm.elf
+          path: ${{ env.BUILD_SNAPSHOT_DIR }}/tf-rmm.elf
+          if-no-files-found: error
