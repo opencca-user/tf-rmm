@@ -11,11 +11,11 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  REPO_DIR: ${{ github.workspace }}/tf-rmm
-  BUILD_SCRIPT: ${{ env.REPO_DIR }}/.github/workflows/opencca/opencca-build.sh
   PROJ_ROOT: ${{ github.workspace }}
+  REPO_SUBDIR: tf-rmm
+  REPO_DIR: ${{ github.workspace }}/tf-rmm
+  BUILD_SCRIPT: ${{ github.workspace }}/tf-rmm/.github/workflows/opencca/opencca-build.sh
   SNAPSHOT_DIR: ${{ github.workspace }}/snapshot
-
 
 jobs:
   build-and-push:
@@ -27,24 +27,24 @@ jobs:
         with:
           submodules: recursive
           clean: true
-          path: tf-rmm
+          path: ${{ env.REPO_SUBDIR }}
 
       - name: Run build script
         run: |
-          cd $PROJ_ROOT
-          cp -rf $REPO_DIR/./.github/workflows/opencca/run-in-docker.sh $PROJ_ROOT/
+          cd "$PROJ_ROOT"
+
+          rm -rf "$SNAPSHOT_DIR"
+          mkdir -p "$SNAPSHOT_DIR"
+
+          cp -f "$REPO_DIR/.github/workflows/opencca/run-in-docker.sh" .
           chmod +x run-in-docker.sh
+          ./run-in-docker.sh "$BUILD_SCRIPT"
 
-          rm -r $SNAPTHOT_DIR
-          mkdir -p $SNAPSHOT_DIR
+          ls -al "$SNAPSHOT_DIR"
 
-          ./run-in-docker.sh $BUILD_SCRIPT
-          ls -al
-          ls -al $SNAPSHOT_DIR
-
-      - name: Upload snapshot artifacts
+      - name: Upload snapshot artifact
         uses: actions/upload-artifact@v4
         with:
           name: tf-rmm-snapshot
-          path: ${{ env.SNAPSHOT_DIR }}/tf-rmm.elf
+          path: snapshot/tf-rmm.elf
           if-no-files-found: error
