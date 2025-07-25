@@ -13,6 +13,7 @@ concurrency:
 env:
   BUILD_SCRIPT: ${{ github.workspace }}/.github/workflows/opencca/opencca-build.sh
   BUILD_SNAPSHOT_DIR: ${{ github.workspace }}/../snapshot
+  RUNNER_DIR: ${{ github.workspace }}/.runner-build
 
 
 jobs:
@@ -27,9 +28,14 @@ jobs:
 
       - name: Run build script
         run: |
-          cp ./.github/workflows/opencca/run-in-docker.sh ../
-          cd ../
+          rm -r $RUNNER_DIR
+          mkdir -p $RUNNER_DIR
+          cp ./.github/workflows/opencca/run-in-docker.sh $RUNNER_DIR/
+          cd $RUNNER_DIR
+          ln -s ../ tf-rmm
           chmod +x run-in-docker.sh
+          mkdir -p snapshot
+          
           ./run-in-docker.sh $BUILD_SCRIPT
           ls -al $BUILD_SNAPSHOT_DIR
 
