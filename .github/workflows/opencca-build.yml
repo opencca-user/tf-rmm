@@ -32,8 +32,8 @@ jobs:
           chmod +x run-in-docker.sh
           ./run-in-docker.sh $BUILD_SCRIPT
 
-      - name Upload snapshot artifacts
+      - name: Upload snapshot artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: tf-rmm.elf
+          name: tf-rmm-snapshot
           path: $BUILD_SNAPSHOT_DIR/tf-rmm.elf
