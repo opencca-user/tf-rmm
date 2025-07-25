@@ -27,7 +27,7 @@ jobs:
 
       - name: Run build script
         run: |
-          rm -r $RUNNER_DIR
+          rm -r $RUNNER_DIR || true
           mkdir -p $RUNNER_DIR
           cp ./.github/workflows/opencca/run-in-docker.sh $RUNNER_DIR/
           cd $RUNNER_DIR
